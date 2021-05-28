@@ -31,7 +31,14 @@ module.exports = function (isDevelopment) {
                         },
                     ],
                 },
+                {
+                    test: /\.css$/i,
+                    use: ["style-loader", "css-loader"],
+                },
             ],
+        },
+        devServer: {
+            historyApiFallback: true,
         },
         plugins: [
             new HtmlWebpackPlugin({
@@ -45,6 +52,7 @@ module.exports = function (isDevelopment) {
             filename: '[name].bundle.js',
             path: path.resolve(__dirname, 'dist'),
             clean: true,
+            publicPath: "/"
         },
     };
 };
