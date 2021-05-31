@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { autorun, makeAutoObservable, runInAction } from 'mobx';
 
 interface Todo {
     userId: number;
@@ -9,20 +9,29 @@ interface Todo {
 
 class TodosStore {
     todos: Todo[] = [];
-    fetched = false;
+    state = 'pending';
 
     constructor() {
         makeAutoObservable(this);
+        autorun(async () => await this.fetchTodos());
     }
 
-    fetchTodos() {
-        fetch('https://jsonplaceholder.typicode.com/todos').then((res) =>
-            res.json().then((data) => {
-                this.todos = data;
-                this.fetched = true;
-            }),
-        );
+    async fetchTodos() {
+        try {
+            const todos = await fetch('https://jsonplaceholder.typicode.com/todos').then((res) =>
+                res.json().then((data) => data),
+            );
+            runInAction(() => {
+                this.todos = todos;
+                this.state = 'done';
+            });
+        } catch (error) {
+            runInAction(() => {
+                this.state = 'error';
+            });
+        }
     }
+
     getTodosByUserId(userId: number) {
         return this.todos.filter((todo) => todo.userId === userId);
     }
