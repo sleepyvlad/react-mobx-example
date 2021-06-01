@@ -5,7 +5,7 @@ import { MenuItem, Select, Button } from '@material-ui/core';
 
 import classNames from './Users.module.css';
 
-import UsersStore from '../../../store/UsersStore';
+import UsersStore from '../../../store/UsersStore/UsersStore';
 
 export const Users: FC = observer(() => {
     const { state, users } = UsersStore;

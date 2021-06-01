@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react';
-import TodosStore from '../../../store/TodosStore';
-import UsersStore from '../../../store/UsersStore';
+import TodosStore from '../../../store/TodosStore/TodosStore';
+import UsersStore from '../../../store/UsersStore/UsersStore';
 import { Checkbox } from '@material-ui/core';
 
 export const Todos: FC = observer(() => {
