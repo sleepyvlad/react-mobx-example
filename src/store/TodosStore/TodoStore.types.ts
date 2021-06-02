@@ -12,7 +12,6 @@ export interface ITodosStore {
     root: IRootStore;
     todos: Todo[];
     state: StoreState;
-    fetchTodos: () => Promise<void>;
-    getTodosByUserId: (id: number) => Todo[];
+    fetchTodos: (userId: number) => Promise<void>;
     toggleTodoCompleteById: (id: number) => void;
 }

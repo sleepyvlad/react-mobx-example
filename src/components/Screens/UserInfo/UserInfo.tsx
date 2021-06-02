@@ -7,13 +7,13 @@ import { useRootStore } from '../../../store/RootStore';
 import classNames from './UserInfo.module.css';
 
 export const UserInfo: FC = observer(() => {
-    const { usersStore, currentUserStore } = useRootStore();
+    const { currentUserStore } = useRootStore();
     const { id }: any = useParams();
     const history = useHistory();
 
     useEffect(() => {
-        usersStore.setActiveUser(id);
-    }, [id, usersStore]);
+        currentUserStore.setCurrentUserId(id);
+    }, [id, currentUserStore]);
 
     const openTodos = () => {
         history.push('/todos');
@@ -29,7 +29,7 @@ export const UserInfo: FC = observer(() => {
                     <p>Email: {currentUserStore.data.email}</p>
                 </div>
             )}
-            <Button disabled={!usersStore.activeUserId} onClick={openTodos}>
+            <Button disabled={!currentUserStore.currentUserId} onClick={openTodos}>
                 Open todos
             </Button>
         </div>

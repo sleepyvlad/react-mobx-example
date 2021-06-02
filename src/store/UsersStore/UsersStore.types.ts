@@ -11,9 +11,6 @@ export type User = {
 export interface IUsersStore {
     root: IRootStore;
     state: StoreState;
-    users: User[];
-    activeUserId: number;
+    users: Pick<User, 'id' | 'username'>[];
     fetchUsers: () => Promise<void>;
-    setActiveUser: (id: number) => void;
-    activeUser: User | undefined;
 }

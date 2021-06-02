@@ -8,18 +8,18 @@ import { useRootStore } from '../../../store/RootStore';
 import classNames from './Users.module.css';
 
 export const Users: FC = observer(() => {
-    const { usersStore } = useRootStore();
+    const { usersStore, currentUserStore } = useRootStore();
     const history = useHistory();
 
     const openTodos = () => {
-        if (usersStore.activeUserId) {
+        if (currentUserStore.currentUserId) {
             history.push('/todos');
         }
     };
 
     const openInfo = () => {
-        if (usersStore.activeUserId) {
-            history.push(`/user-info/${usersStore.activeUserId}`);
+        if (currentUserStore.currentUserId) {
+            history.push(`/user-info/${currentUserStore.currentUserId}`);
         }
     };
 
@@ -35,7 +35,7 @@ export const Users: FC = observer(() => {
                         className={classNames.select}
                         onChange={(event) => {
                             const { value }: any = event.target;
-                            usersStore.setActiveUser(value);
+                            currentUserStore.setCurrentUserId(value);
                         }}
                     >
                         {usersStore.users.map((user) => (
@@ -51,10 +51,10 @@ export const Users: FC = observer(() => {
         <div className={classNames.container}>
             <h2>Select User:</h2>
             {renderUserSelect()}
-            <Button disabled={!usersStore.activeUserId} onClick={openTodos}>
+            <Button disabled={!currentUserStore.currentUserId} onClick={openTodos}>
                 Open todos
             </Button>
-            <Button disabled={!usersStore.activeUserId} onClick={openInfo}>
+            <Button disabled={!currentUserStore.currentUserId} onClick={openInfo}>
                 Open info
             </Button>
         </div>

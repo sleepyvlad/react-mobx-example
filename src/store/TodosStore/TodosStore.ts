@@ -1,4 +1,4 @@
-import { autorun, makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { StoreState } from '../../global';
 import { ITodosStore, Todo } from './TodoStore.types';
 import { IRootStore } from '../RootStore';
@@ -11,12 +11,11 @@ class TodosStore implements ITodosStore {
     constructor(root: IRootStore) {
         this.root = root;
         makeAutoObservable(this);
-        autorun(async () => await this.fetchTodos());
     }
 
-    async fetchTodos(): Promise<void> {
+    async fetchTodos(userId: number): Promise<void> {
         try {
-            const todos = await fetch('https://jsonplaceholder.typicode.com/todos').then((res) =>
+            const todos = await fetch(`https://jsonplaceholder.typicode.com/todos?userId=${userId}`).then((res) =>
                 res.json().then((data) => data),
             );
             runInAction(() => {
@@ -28,10 +27,6 @@ class TodosStore implements ITodosStore {
                 this.state = StoreState.error;
             });
         }
-    }
-
-    getTodosByUserId(userId: number): Todo[] {
-        return this.todos.filter((todo) => todo.userId === userId);
     }
 
     toggleTodoCompleteById(id: number): void {

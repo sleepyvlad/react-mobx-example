@@ -6,8 +6,7 @@ import { IRootStore } from '../RootStore';
 class UsersStore implements IUsersStore {
     root: IRootStore;
     state = StoreState.pending;
-    users: User[] = [];
-    activeUserId = 0;
+    users: Pick<User, 'id' | 'username'>[] = [];
 
     constructor(root: IRootStore) {
         this.root = root;
@@ -28,17 +27,6 @@ class UsersStore implements IUsersStore {
             runInAction(() => {
                 this.state = StoreState.error;
             });
-        }
-    }
-
-    setActiveUser(id: number): void {
-        this.activeUserId = id;
-    }
-
-    //Computed value
-    get activeUser(): User | undefined {
-        if (this.activeUserId && this.users.length) {
-            return this.users.find((user) => user.id === this.activeUserId);
         }
     }
 }
