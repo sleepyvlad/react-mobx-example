@@ -1,42 +1,40 @@
 import { autorun, makeAutoObservable, runInAction } from 'mobx';
+import { StoreState } from '../../global';
+import { ITodosStore, Todo } from './TodoStore.types';
+import { IRootStore } from '../RootStore';
 
-interface Todo {
-    userId: number;
-    id: number;
-    title: string;
-    completed: boolean;
-}
-
-class TodosStore {
+class TodosStore implements ITodosStore {
     todos: Todo[] = [];
-    state = 'pending';
+    state = StoreState.pending;
+    root: IRootStore;
 
-    constructor() {
+    constructor(root: IRootStore) {
+        this.root = root;
         makeAutoObservable(this);
         autorun(async () => await this.fetchTodos());
     }
 
-    async fetchTodos() {
+    async fetchTodos(): Promise<void> {
         try {
             const todos = await fetch('https://jsonplaceholder.typicode.com/todos').then((res) =>
                 res.json().then((data) => data),
             );
             runInAction(() => {
                 this.todos = todos;
-                this.state = 'done';
+                this.state = StoreState.done;
             });
         } catch (error) {
             runInAction(() => {
-                this.state = 'error';
+                this.state = StoreState.error;
             });
         }
     }
 
-    getTodosByUserId(userId: number) {
+    getTodosByUserId(userId: number): Todo[] {
         return this.todos.filter((todo) => todo.userId === userId);
     }
 
-    toggleTodoCompleteById(id: number) {
+    toggleTodoCompleteById(id: number): void {
         const togglingTodo = this.todos.find((todo) => todo.id === id);
         if (togglingTodo) {
             togglingTodo.completed = !togglingTodo.completed;
@@ -44,4 +42,4 @@ class TodosStore {
     }
 }
 
-export default new TodosStore();
+export default TodosStore;
