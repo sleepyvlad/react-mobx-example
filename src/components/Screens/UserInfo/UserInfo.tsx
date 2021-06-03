@@ -8,11 +8,13 @@ import classNames from './UserInfo.module.css';
 
 export const UserInfo: FC = observer(() => {
     const { currentUserStore } = useRootStore();
-    const { id }: any = useParams();
+    const { id }: { id: string | undefined } = useParams();
     const history = useHistory();
 
     useEffect(() => {
-        currentUserStore.setCurrentUserId(id);
+        if (id) {
+            currentUserStore.setCurrentUserId(+id);
+        }
     }, [id, currentUserStore]);
 
     const openTodos = () => {

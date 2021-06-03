@@ -59,7 +59,9 @@
     "verbose": true,
     "clearMocks": true,
     "collectCoverage": true,
-    "coverageReporters": ["html"],
+    "coverageReporters": [
+      "html"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",

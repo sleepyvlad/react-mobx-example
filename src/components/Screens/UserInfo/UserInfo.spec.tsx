@@ -1,7 +1,6 @@
 import React from 'react';
-import { Todos } from './Todos';
+import { UserInfo } from './UserInfo';
 import { shallow } from 'enzyme';
-import { Checkbox } from '@material-ui/core';
 import * as StoreContext from '../../../store/RootStore/RootStore.provider';
 
 const TODOS = [
@@ -56,17 +55,28 @@ const root = {
     },
 } as any;
 
+const originalModule = jest.requireActual('react-router-dom');
+const mockedUseParams = jest.fn(() => {
+    return { id: '1' };
+});
+const mockedUseHistory = jest.fn();
+jest.mock('react-router-dom', () => ({
+    ...originalModule,
+    useParams: () => mockedUseParams,
+    useHistory: () => mockedUseHistory,
+}));
 beforeEach(() => {
     jest.spyOn(StoreContext, 'useRootStore').mockImplementation(() => root);
 });
 
-it('should render Todos title', () => {
-    const component = shallow(<Todos />);
+it('should render UserInfo title', () => {
+    const component = shallow(<UserInfo />);
     const title = component.find('h2');
-    expect(title.text()).toMatch(/your todos:/);
+    expect(title.text()).toMatch('User Info:');
 });
 
-it('should render todos checkboxes', () => {
-    const component = shallow(<Todos />);
-    expect(component.find(Checkbox)).toHaveLength(5);
+it('should render UserInfo user info', () => {
+    const component = shallow(<UserInfo />);
+    const information = component.find('p');
+    expect(information).toHaveLength(3);
 });
