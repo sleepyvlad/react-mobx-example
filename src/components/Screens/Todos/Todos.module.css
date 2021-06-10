@@ -6,3 +6,7 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.table-cell {
+    text-align: center;
+}
